@@ -44,15 +44,13 @@ CHIP ALU {
     PARTS:
         Mux16(a=x,b=false,sel=zx,out=zxmux);
         Mux16(a=y,b=false,sel=zy,out=zymux);
-        Not16(in=zxmux,out=notx);
-        Not16(in=zymux,out=noty);
         Mux16(a=zxmux,b=notx,sel=nx,out=nxmux);
         Mux16(a=zymux,b=noty,sel=ny,out=nymux);
-        // Or16(a=zxmux,b=nxmux,out=zxornx);
-        // Or16(a=zymux,b=nymux,out=zyorny);
+        Mux16(a=nxandny,b=adder,sel=f,out=fmux);
+        Mux16(a=fmux,b=notfmux,sel=no,out=out);
+        Not16(in=zxmux,out=notx);
+        Not16(in=zymux,out=noty);
+        Not16(in=fmux,out=notfmux);
         And16(a=nxmux,b=nymux,out=nxandny);
         Add16(a=nxmux,b=nymux,out=adder);
-        Mux16(a=nxandny,b=adder,sel=f,out=fmux);
-        Not16(in=fmux,out=notfmux);
-        Mux16(a=fmux,b=notfmux,sel=no,out=out);
 }
